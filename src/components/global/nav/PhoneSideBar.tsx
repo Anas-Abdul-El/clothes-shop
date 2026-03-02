@@ -1,8 +1,6 @@
 "use client"
 import {
     DrawerContent,
-    DrawerClose,
-    DrawerFooter,
     DrawerHeader,
     DrawerTitle,
     Drawer,
@@ -10,7 +8,6 @@ import {
 } from "@/components/ui/drawer"
 import { Sidebar, X } from 'lucide-react'
 import Link from "next/link"
-import { useState } from "react"
 
 type Link = {
     name: string;

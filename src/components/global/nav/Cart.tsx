@@ -90,8 +90,7 @@ function Cart() {
 
                             </> :
                             <>
-                                <div className='overflow-auto h-8/11'>
-
+                                <div className='overflow-auto h-8/11 pb-10'>
                                     {
                                         items.map((ele, key) => (
                                             <div key={key} className='w-full h-35 flex p-5 gap-5 '>
