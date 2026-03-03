@@ -31,7 +31,7 @@ const links = [
 
 function Nav() {
     return (
-        <nav className='bg-white w-full h-20 border-b border-b-[#f7757153]'>
+        <nav className='fixed bg-white w-full h-20 border-b border-b-[#f7757153] z-50'>
             <div className='w-6/7 h-full mx-auto flex items-center justify-between'>
                 <div className='w-2/5 h-full hidden items-center justify-evenly md:flex'>
                     {

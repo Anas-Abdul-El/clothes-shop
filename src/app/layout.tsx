@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={figtree.variable}>
       <body
-        className={`${geistSans.variable} antialiased bg-[#F3E9E1]`}
+        className={`${geistSans.variable} antialiased `}
       >
         <Nav />
         {children}
