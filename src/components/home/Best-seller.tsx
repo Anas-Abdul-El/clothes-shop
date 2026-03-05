@@ -47,7 +47,7 @@ const bestSellerData = [
 
 function BestSeller() {
     return (
-        <section className="w-full min-h-screen md:px-40 bg-[#F7F1EB] mt-20">
+        <section className="w-full min-h-screen px-6 md:px-40 bg-[#F7F1EB] mt-20">
             <div className="py-30 w-full h-60 flex flex-col md:flex-row items-center justify-between">
                 <div>
                     <p className=' uppercase text-gray-500 tracking-[0.3rem] text-xs'>most loved</p>
