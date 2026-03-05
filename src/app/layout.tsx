@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Figtree } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/global/nav/Nav";
+import Footer from "@/components/global/footer/Footer";
 
 const figtree = Figtree({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
       >
         <Nav />
         {children}
+        <Footer />
       </body>
     </html>
   );
