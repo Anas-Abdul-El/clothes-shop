@@ -3,6 +3,7 @@ import { Geist, Figtree } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/global/nav/Nav";
 import Footer from "@/components/global/footer/Footer";
+import WhatssappButton from "@/components/global/whatssappButton/Whatssapp-button";
 
 const figtree = Figtree({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -29,6 +30,7 @@ export default function RootLayout({
       >
         <Nav />
         {children}
+        <WhatssappButton/>
         <Footer />
       </body>
     </html>
