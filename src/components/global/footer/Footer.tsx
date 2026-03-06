@@ -59,7 +59,7 @@ function Footer() {
                 </div>
             </div>
             <span className='absolute h-[0.2px] w-4/5 border-white/10 border mt-15'></span>
-            <div className="flex w-full justify-between mt-25 mb-5">
+            <div className="flex w-full justify-between mt-25 mb-5 gap-5 flex-col md:flex-row">
                 <p className='text-sm text-white/40'>© 2024 Company Name. All rights reserved.</p>
                 <p className="text-sm text-white/40">Delivery available all over Lebanon</p>
             </div>

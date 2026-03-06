@@ -46,7 +46,7 @@ function Comments() {
     }
 
     return (
-        <div className=' w-full px-20 md:px-40 mt-40'>
+        <div className=' w-full px-20 md:px-10 lg:px-40 mt-40'>
             <div className=' container text-center '>
                 <p className='text-gray-500 tracking-[0.3rem] uppercase text-xs'>what they say</p>
                 <h2 className='text-5xl capitalize font-serif font-light mt-5'>our happy customers</h2>

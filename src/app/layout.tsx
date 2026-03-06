@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={figtree.variable}>
       <body
-        className={`${geistSans.variable} antialiased `}
+        className={`${geistSans.variable} antialiased overflow-x-hidden`}
       >
         <Nav />
         {children}

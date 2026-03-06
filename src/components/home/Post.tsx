@@ -27,7 +27,7 @@ function Post({
             <Instagram
                 color='white'
                 size={32}
-                className='absolute top-30 left-30 opacity-0 group-hover:opacity-100 transition-opacity duration-500' />
+                className='relative -top-1/2 left-[calc(50%-16px)] opacity-0 group-hover:opacity-100 transition-opacity duration-500' />
         </div>
     )
 }
