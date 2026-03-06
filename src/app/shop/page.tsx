@@ -1,10 +1,11 @@
-import ShopHeader from '@/components/shop/Shop-header'
-import React from 'react'
+import ShopWrapper from '@/components/shop/Shop-wrapper'
+
 
 function Shop() {
   return (
-    <main>
-        <ShopHeader/>
+    <main className='w-full md:px-20'>
+        <ShopWrapper/>
+
     </main>
   )
 }
