@@ -136,7 +136,7 @@ function ShopWrapper() {
         </div>
         {
           !isSorted && (
-          <div className='mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:p-4 gap-5'>
+          <div className='mt-5 grid grid-cols-1  lg:grid-cols-3 md:p-4 gap-5'>
             {
               products.map((product, key) => (
                 <ProductWrapper key={key} product={product} type="shop" />
