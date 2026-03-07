@@ -1,6 +1,6 @@
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
-import BestSellerWrapper from './Best-seller-wrapper'
+import ProductWrapper from '../global/Product-wrapper'
 
 const bestSellerData = [
     {
@@ -63,7 +63,11 @@ function BestSeller() {
             <div className='w-full h-auto grid grid-cols-2 lg:grid-cols-4 gap-x-5 space-y-3 py-10'>
                 {
                     bestSellerData.map((product) => (
-                        <BestSellerWrapper key={product.id} bestSellerData={product} />
+                        <ProductWrapper 
+                            key={product.id} 
+                            product={product} 
+                            type="bestSeller" 
+                        />
                     ))
                 }
             </div>

@@ -1,9 +1,9 @@
 import React from 'react'
 
-function ShopItems() {
+function ShopItem() {
   return (
     <div>ShopItems</div>
   )
 }
 
-export default ShopItems
+export default ShopItem

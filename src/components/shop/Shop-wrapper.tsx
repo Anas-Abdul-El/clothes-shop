@@ -1,9 +1,9 @@
 "use client"
-import ShopItems from '@/components/shop/Shop-items'
 import { useState } from 'react'
 import { Button } from '../ui/button'
 import { Settings } from 'lucide-react'
 import SortedBy from './Sorted-by'
+import ProductWrapper from '../global/Product-wrapper'
 
 const Filters = [
   {
@@ -19,7 +19,75 @@ const Filters = [
     options : ["All" , 'Under $100', '$100 - $130', 'Over $130']
   }
 ]
-function ShopHeader() {
+
+const products = [
+    {
+        id: 1,
+        name: 'Product 1',
+        price: '$29.99',
+        isFeatured: true,
+        isSale: true,
+        image: '/images/products/product-1.jpg',
+    },
+    {
+        id: 2,
+        name: 'Product 2',
+        price: '$39.99',
+        isFeatured: false,
+        isSale: true,
+        image: '/images/products/product-2.jpg',
+    },
+    {
+        id: 3,
+        name: 'Product 3',
+        price: '$49.99',
+        isFeatured: false,
+        isSale: false,
+        image: '/images/products/product-3.jpg',
+    },
+    {
+        id: 4,
+        name: 'Product 4',
+        price: '$59.99',
+        isFeatured: true,
+        isSale: false,
+        image: '/images/products/product-4.jpg',
+    },
+    {
+        id: 5,
+        name: 'Product 5',
+        price: '$59.99',
+        isFeatured: false,
+        isSale: true,
+        image: '/images/products/product-5.jpg',
+    },
+    {
+        id: 6,
+        name: 'Product 6',
+        price: '$69.99',
+        isFeatured: false,
+        isSale: false,
+        image: '/images/products/product-6.jpg',
+    },
+    {
+        id: 7,
+        name: 'Product 7',
+        price: '$79.99',
+        isFeatured: true,
+        isSale: true,
+        image: '/images/products/product-7.jpg',
+    },
+    {
+        id: 8,
+        name: 'Product 8',
+        price: '$89.99',
+        isFeatured: false,
+        isSale: false,
+        image: '/images/products/product-8.jpg',
+    },
+]
+
+function ShopWrapper() {
 
   const num = 8
 
@@ -66,12 +134,20 @@ function ShopHeader() {
               ))
             }
         </div>
-        <div>
-          <ShopItems />
+        {
+          !isSorted && (
+          <div className='mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:p-4 gap-5'>
+            {
+              products.map((product, key) => (
+                <ProductWrapper key={key} product={product} type="shop" />
+              ))
+            }
         </div>
+          ) 
+        }
       </div>
     </div>
   )
 }
 
-export default ShopHeader
+export default ShopWrapper
