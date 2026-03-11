@@ -174,3 +174,15 @@ model StoreSettings {
   instagramUrl   String
   deliveryInfo   String
 }
+
+model ActivityLog {
+  id        String   @id @default(uuid())
+  type      String
+  userId    String
+  action    String
+  details   Json?
+  createdAt DateTime @default(now())
+  orderId   String?
+
+  username String
+}

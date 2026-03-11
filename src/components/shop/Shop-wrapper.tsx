@@ -4,7 +4,20 @@ import { Button } from '../ui/button'
 import { Settings } from 'lucide-react'
 import SortedBy from './Sorted-by'
 import ProductWrapper from '../global/Product-wrapper'
-import { redirect, usePathname, useRouter, useSearchParams } from 'next/navigation'
+import {
+  redirect,
+  usePathname,
+  useRouter,
+  useSearchParams
+} from 'next/navigation'
+
+type Products = {
+  [x: string]: string
+}
+
+type shopProp = {
+  productss: Products
+}
 
 const Filters = [
   {
@@ -88,7 +101,9 @@ const products = [
   },
 ]
 
-function ShopWrapper() {
+function ShopWrapper({
+  productss
+}: shopProp) {
 
   const num = 8
   const [isSorted, setIsSorted] = useState(false)
