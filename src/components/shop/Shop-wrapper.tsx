@@ -1,8 +1,9 @@
 "use client"
 import { useState } from 'react'
 import { Button } from '../ui/button'
-import { Settings } from 'lucide-react'
+import { Settings, TriangleAlert } from 'lucide-react'
 import SortedBy from './Sorted-by'
+import type { Product } from '@/types'
 import ProductWrapper from '../global/Product-wrapper'
 import {
   redirect,
@@ -11,12 +12,13 @@ import {
   useSearchParams
 } from 'next/navigation'
 
-type Products = {
-  [x: string]: string
+
+type Products = Product[] | {
+  error: string;
 }
 
 type shopProp = {
-  productss: Products
+  products: Products
 }
 
 const Filters = [
@@ -34,75 +36,9 @@ const Filters = [
   }
 ]
 
-const products = [
-  {
-    id: 1,
-    name: 'Product 1',
-    price: '$29.99',
-    isFeatured: true,
-    isSale: true,
-    image: '/images/products/product-1.jpg',
-  },
-  {
-    id: 2,
-    name: 'Product 2',
-    price: '$39.99',
-    isFeatured: false,
-    isSale: true,
-    image: '/images/products/product-2.jpg',
-  },
-  {
-    id: 3,
-    name: 'Product 3',
-    price: '$49.99',
-    isFeatured: false,
-    isSale: false,
-    image: '/images/products/product-3.jpg',
-  },
-  {
-    id: 4,
-    name: 'Product 4',
-    price: '$59.99',
-    isFeatured: true,
-    isSale: false,
-    image: '/images/products/product-4.jpg',
-  },
-  {
-    id: 5,
-    name: 'Product 5',
-    price: '$59.99',
-    isFeatured: false,
-    isSale: true,
-    image: '/images/products/product-5.jpg',
-  },
-  {
-    id: 6,
-    name: 'Product 6',
-    price: '$69.99',
-    isFeatured: false,
-    isSale: false,
-    image: '/images/products/product-6.jpg',
-  },
-  {
-    id: 7,
-    name: 'Product 7',
-    price: '$79.99',
-    isFeatured: true,
-    isSale: true,
-    image: '/images/products/product-7.jpg',
-  },
-  {
-    id: 8,
-    name: 'Product 8',
-    price: '$89.99',
-    isFeatured: false,
-    isSale: false,
-    image: '/images/products/product-8.jpg',
-  },
-]
 
 function ShopWrapper({
-  productss
+  products
 }: shopProp) {
 
   const num = 8
@@ -133,6 +69,9 @@ function ShopWrapper({
   const handleClick = (id: number) => {
     redirect(`/shop/${id}`)
   }
+
+
+
 
   return (
     <div className='p-20 relative'>
@@ -184,14 +123,32 @@ function ShopWrapper({
           }
         </div>
         {
-          !isSorted && (
-            <div className='mt-5 grid grid-cols-1  lg:grid-cols-3 md:p-4 gap-5'>
-              {
-                products.map((product, key) => (
-                  <ProductWrapper key={key} product={product} type="shop" handleClick={handleClick} />
-                ))
-              }
+          ("error" in products) ? (
+            <div className='p-10 mx-auto border h-fit mt-40 rounded-2xl'>
+              <TriangleAlert color='red' size={40} className='mx-auto mb-5' />
+              <p className=' capitalize font-bold text-red-500'>{products.error}</p>
+              <Button
+                onClick={() => redirect("/shop")}
+                className='p-7 py-5 mx-auto mt-10 bg-transparent rounded-none border border-black/20 text-black'
+              >Refresh the Page</Button>
             </div>
+          ) : (
+
+            !isSorted && (
+              <div className='mt-5 grid grid-cols-1 lg:grid-cols-3 md:p-4 gap-5'>
+                {
+                  products.map((product, key) => (
+                    <ProductWrapper
+                      key={key}
+                      product={product}
+                      type="shop"
+                      handleClick={handleClick}
+                    />
+                  ))
+                }
+              </div>
+            )
+
           )
         }
       </div>

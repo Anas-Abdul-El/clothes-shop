@@ -6,7 +6,7 @@ import { Loading } from '@/components/global/Loading'
 
 const ProductsFetching = async () => {
   const products = await getAllProduct()
-  return <ShopWrapper productss={products} />
+  return <ShopWrapper products={products} />
 
 }
 
@@ -14,11 +14,11 @@ const ProductsFetching = async () => {
 async function Shop() {
 
   return (
-    <main className='w-full md:px-20'>
-      <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading />}>
+      <main className='w-full md:px-20'>
         <ProductsFetching />
-      </Suspense>
-    </main>
+      </main>
+    </Suspense>
   )
 }
 

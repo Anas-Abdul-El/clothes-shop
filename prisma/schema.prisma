@@ -30,7 +30,7 @@ enum PaymentMethod {
 //////////////////////////
 
 model Product {
-  id             String   @id @default(cuid())
+  id             Int      @id @default(autoincrement())
   name           String
   description    String
   price          Float
@@ -68,13 +68,13 @@ model Collection {
 model ProductImage {
   id        String  @id @default(cuid())
   url       String
-  productId String
+  productId Int
   product   Product @relation(fields: [productId], references: [id])
 }
 
 model ProductVariant {
   id        String  @id @default(cuid())
-  productId String
+  productId Int
   product   Product @relation(fields: [productId], references: [id])
 
   color String
@@ -99,7 +99,7 @@ model CartItem {
   cartId String
   cart   Cart   @relation(fields: [cartId], references: [id])
 
-  productId String
+  productId Int
   product   Product @relation(fields: [productId], references: [id])
 
   variantId String?
@@ -131,7 +131,7 @@ model OrderItem {
   orderId String
   order   Order  @relation(fields: [orderId], references: [id])
 
-  productId String
+  productId Int
   product   Product @relation(fields: [productId], references: [id])
 
   name     String
@@ -142,7 +142,8 @@ model OrderItem {
 }
 
 //////////////////////////
-// CONTENT / MARKETING
+// CONTENT 
+// MARKETING
 //////////////////////////
 
 model InstagramPost {

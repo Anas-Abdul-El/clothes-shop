@@ -14,6 +14,7 @@ async function cachingProduct() {
             include: {
                 images: true,
                 variants: true,
+                collection: true,
             },
         })
 
@@ -30,7 +31,8 @@ async function cachingProduct() {
                 createdAt,
                 updatedAt,
                 variants,
-                images
+                images,
+                collection
             } = product
 
             for (const ele of variants) {
@@ -39,11 +41,17 @@ async function cachingProduct() {
                 await client.rPush(`size:${id}`, ele.size)
             }
 
+            await client.zAdd('products', {
+                score: id,
+                value: name,
+            })
+
             await client.hSet(`products:${id}`, {
                 id,
                 name,
                 description,
                 price,
+                collection: collection?.name || "dress",
                 image: images[0].url,
                 compareAtPrice: compareAtPrice || 0,
                 isBestSeller: isBestSeller ? 1 : 0,

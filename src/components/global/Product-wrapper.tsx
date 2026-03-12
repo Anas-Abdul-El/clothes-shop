@@ -1,20 +1,14 @@
 "use client"
 import Image from 'next/image';
 import Cart from './nav/Cart';
+import { Product } from '@/types';
 
 function ProductWrapper({
     product,
     type,
     handleClick,
 }: {
-    product: {
-        id: number;
-        name: string;
-        price: string;
-        isFeatured: boolean;
-        isSale: boolean;
-        image: string;
-    },
+    product: Product
     type: 'shop' | 'bestSeller',
     handleClick: (id: number) => void
 }) {
@@ -24,7 +18,7 @@ function ProductWrapper({
         <div className='w-full h-110 relative group' onClick={() => handleClick(product.id)}>
             <div className="w-20 h-20 flex flex-col justify-start items-center absolute p-3 gap-1">
                 {product.isFeatured && <p className='bg-black text-white text-[0.6rem] uppercase p-1 px-3 rounded-4xl z-10'>new</p>}
-                {product.isSale && <p className='bg-red-500 text-white text-[0.6rem] uppercase p-1 px-3 rounded-4xl z-10'>sale</p>}
+                {product.isBestSeller && <p className='bg-red-500 text-white text-[0.6rem] uppercase p-1 px-3 rounded-4xl z-10'>sale</p>}
             </div>
             <div className='w-full h-6/7 overflow-hidden object-cover rounded-xl'>
                 <Image
