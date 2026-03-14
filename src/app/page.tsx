@@ -1,3 +1,4 @@
+"use client"
 import BestSeller from "@/components/home/Best-seller";
 import Comments from "@/components/home/Comments";
 import HeroSection from "@/components/home/Hero-section";
@@ -13,6 +14,7 @@ export default function Page() {
       <BestSeller />
       <Comments />
       <InstaPost />
+      {/* <button onClick={createTest}>click</button> */}
     </main>
   )
 }

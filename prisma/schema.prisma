@@ -47,7 +47,7 @@ model Product {
   variants     ProductVariant[]
   orderItems   OrderItem[]
   collection   Collection?      @relation(fields: [collectionId], references: [id])
-  collectionId String?
+  collectionId Int?
   cartItems    CartItem[]
 }
 
@@ -58,7 +58,7 @@ model Category {
 }
 
 model Collection {
-  id          String    @id @default(cuid())
+  id          Int       @id @default(autoincrement())
   name        String
   description String?
   image       String?

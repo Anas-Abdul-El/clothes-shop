@@ -36,17 +36,24 @@ async function cachingProduct() {
             } = product
 
             for (const ele of variants) {
-                await client.rPush(`color:${id}`, ele.color)
-                await client.rPush(`stock:${id}`, `${ele.stock}`)
-                await client.rPush(`size:${id}`, ele.size)
+
+                await client.rpush(`color:${id}`, ele.color)
+                await client.expire(`color:${id}`, 60 * 60)
+
+                await client.rpush(`stock:${id}`, `${ele.stock}`)
+                await client.expire(`stock:${id}`, 60 * 60)
+
+                await client.rpush(`size:${id}`, ele.size)
+                await client.expire(`size:${id}`, 60 * 60)
             }
 
-            await client.zAdd('products', {
+            await client.zadd('products', {
                 score: id,
-                value: name,
+                member: name,
             })
+            await client.expire("products", 60 * 60)
 
-            await client.hSet(`products:${id}`, {
+            await client.hset(`products:${id}`, {
                 id,
                 name,
                 description,
@@ -60,9 +67,11 @@ async function cachingProduct() {
                 updatedAt: `${updatedAt}`,
             })
 
+            client.expire(`products:${id}`, 60 * 60)
+
         }
 
-        await client.set("products:cached", "1")
+        await client.set("products:cached", "1", { "ex": 60 * 60 })
 
     } catch (err) {
 

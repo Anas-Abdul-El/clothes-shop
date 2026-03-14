@@ -1,40 +1,15 @@
 import Image from "next/image"
 import Link from "next/link"
+import getCollections from "../../../server/getCollections"
+import { collectionType } from "@/types"
+import ErrorInFetching from "../global/Error-in-fetching"
 
 
-const collection = [
-    {
-        id: 1,
-        name: "Ramadan collection",
-        href: "ramadan collection",
-        desc: "elegant and modest clothing for the holy month",
-        image: "/images/collections/ramadan.jpg"
-    },
-    {
-        id: 2,
-        name: "Daily wear",
-        href: "daily wear",
-        desc: "comfortable and stylish outfits for everyday wear",
-        image: "/images/collections/daily-wear.jpg"
-    },
-    {
-        id: 3,
-        name: "sets",
-        href: "sets",
-        desc: "coordinated outfits for a polished and put-together look",
-        image: "/images/collections/sets.jpg"
-    },
-    {
-        id: 4,
-        name: "dresses",
-        href: "dresses",
-        desc: "flowy and feminine dresses for any occasion",
-        image: "/images/collections/dresses.jpg"
-    },
-]
 
 
-function CollectionsWrapper() {
+async function CollectionsWrapper() {
+    const collection = await getCollections() as collectionType[] | { error: string }
+
     return (
         <div className='p-8 md:p-9 lg:p-20 relative'>
             <div className='md:w-120 my-20'>
@@ -43,30 +18,35 @@ function CollectionsWrapper() {
             </div>
             <section className="w-full grid grid-cols-1 lg:grid-cols-2 gap-5">
                 {
-                    collection.map((item) => (
-                        <div key={item.id} className='overflow-hidden relative mx-5 rounded-lg cursor-pointer group'>
+                    ("error" in collection) ? (
+                        <ErrorInFetching error={collection.error} />
+                    ) : (
 
-                            <Image
-                                src={item.image}
-                                alt={item.name}
-                                height={800}
-                                width={800}
-                                className='bg-gray-500 w-full h-full group-hover:scale-110 object-cover object-center transition-transform duration-300 ease-in-out transform hover:scale-110'
-                            />
+                        collection.map((item) => (
+                            <div key={item.id} className='overflow-hidden relative mx-5 rounded-lg cursor-pointer group'>
 
-                            <div className=" absolute z-10 w-full text-white h-full top-0 flex justify-center items-center flex-col gap-5 bg-black/30 p-10 text-center">
-                                <div className="flex flex-col items-center gap-1">
-                                    <h3 className="text-xl lg:text-3xl font-semibold">{item.name}</h3>
-                                    <p className=" text-white/70">{item.desc}</p>
+                                <Image
+                                    src={item.image}
+                                    alt={item.name}
+                                    height={800}
+                                    width={800}
+                                    className='bg-gray-500 w-full h-full group-hover:scale-110 object-cover object-center transition-transform duration-300 ease-in-out transform hover:scale-110'
+                                />
+
+                                <div className=" absolute z-10 w-full text-white h-full top-0 flex justify-center items-center flex-col gap-5 bg-black/30 p-10 text-center">
+                                    <div className="flex flex-col items-center gap-1">
+                                        <h3 className="text-xl lg:text-3xl font-semibold">{item.name}</h3>
+                                        <p className=" text-white/70">{item.description}</p>
+                                    </div>
+                                    <Link href={`/shop?collection=${item.name}`} className="px-4 py-2 placeholder-sky-300 uppercase bg-transparent rounded-sm border-white/50 group-hover:border-white border-2 group-hover:bg-white group-hover:text-black transition-colors duration-300 ease-in-out">
+                                        <p>shop now</p>
+                                    </Link>
                                 </div>
-                                <Link href={`/shop?collection=${item.href}`} className="px-4 py-2 placeholder-sky-300 uppercase bg-transparent rounded-sm border-white/50 group-hover:border-white border-2 group-hover:bg-white group-hover:text-black transition-colors duration-300 ease-in-out">
-                                    <p>shop now</p>
-                                </Link>
                             </div>
-                        </div>
-                    ))
-                }
+                        ))
 
+                    )
+                }
             </section>
         </div>
     )

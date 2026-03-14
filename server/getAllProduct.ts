@@ -8,14 +8,17 @@ async function getAllProduct() {
     try {
         await cachingProduct()
 
-        const range = await client.zRangeWithScores('products', 0, -1)
+        const range = await client.zrange('products', 0, -1)
 
-        const data = await Promise.all(range.map(e => client.hGetAll(`products:${e.score}`))) as unknown as Product[]
+        const arr = []
+        for (let i = 1; i <= range.length; i++) {
+            arr.push({
+                value: range[i],
+                score: i,
+            })
+        }
 
-        await client.expire("products", 60 * 60)
-        await Promise.all(
-            range.map(e => client.expire(`products:${e.score}`, 60 * 60))
-        )
+        const data = await Promise.all(arr.map(e => client.hgetall(`products:${e.score}`))) as unknown as Product[]
 
         return JSON.parse(JSON.stringify(data))
     } catch (err) {

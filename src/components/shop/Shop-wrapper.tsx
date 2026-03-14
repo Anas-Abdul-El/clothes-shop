@@ -11,6 +11,7 @@ import {
   useRouter,
   useSearchParams
 } from 'next/navigation'
+import ErrorInFetching from '../global/Error-in-fetching'
 
 
 type Products = Product[] | {
@@ -124,16 +125,8 @@ function ShopWrapper({
         </div>
         {
           ("error" in products) ? (
-            <div className='p-10 mx-auto border h-fit mt-40 rounded-2xl'>
-              <TriangleAlert color='red' size={40} className='mx-auto mb-5' />
-              <p className=' capitalize font-bold text-red-500'>{products.error}</p>
-              <Button
-                onClick={() => redirect("/shop")}
-                className='p-7 py-5 mx-auto mt-10 bg-transparent rounded-none border border-black/20 text-black'
-              >Refresh the Page</Button>
-            </div>
+            <ErrorInFetching error={products.error} />
           ) : (
-
             !isSorted && (
               <div className='mt-5 grid grid-cols-1 lg:grid-cols-3 md:p-4 gap-5'>
                 {
@@ -152,7 +145,7 @@ function ShopWrapper({
           )
         }
       </div>
-    </div>
+    </div >
   )
 }
 

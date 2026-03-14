@@ -1,31 +1,20 @@
 "use client"
 import { Button } from '@/components/ui/button'
+import type { ProductWithAllValues } from '@/types'
 import { ArrowLeft, ShoppingBag, MessageCircle, Truck } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 
-const size = [
-    "s",
-    "m",
-    "l",
-    "xl"
-]
-
-const color = [
-    "blush pink",
-    "Cream",
-    "black",
-]
 
 function ProductIdWrapper({
-    productId
+    product,
 }: {
-    productId: string
+    product: ProductWithAllValues
 }) {
 
-    const [sizeSelected, setSizeSelected] = useState(size[0])
-    const [colorSelected, setcolorSelected] = useState(color[0])
+    const [sizeSelected, setSizeSelected] = useState(product.size[0])
+    const [colorSelected, setcolorSelected] = useState(product.color[0])
 
 
     const handleSize = (size: string) => {
@@ -47,7 +36,7 @@ function ProductIdWrapper({
                     <Image
                         width={900}
                         height={1000}
-                        src={"/images/products/product-1.jpg"}
+                        src={product.image}
                         alt="product image"
                         className="w-full h-full object-cover"
 
@@ -56,12 +45,12 @@ function ProductIdWrapper({
             </div>
             <div className="flex flex-col gap-5 md:mt-32 mt-11 md:ml-10 ">
                 <div className="flex flex-col gap-2">
-                    <p className="uppercase text-xs tracking-[0.3rem] text-gray-500">Ramadan Collection</p>
-                    <h1 className="capitalize text-4xl font-serif">Blush Silk Abaya</h1>
+                    <p className="uppercase text-xs tracking-[0.3rem] text-gray-500">{product.collection}</p>
+                    <h1 className="capitalize text-4xl font-serif">{product.name}</h1>
                 </div>
-                <p className="text-2xl font-bold">$89</p>
+                <p className="text-2xl font-bold">${product.price}</p>
                 <p className="pr-8 text-sm text-gray-500">
-                    A luxurious blush pink abaya crafted from premium silk fabric. Features elegant flowing silhouette with delicate detailing. Perfect for special occasions and Ramadan gatherings.
+                    {product.description}
                 </p>
                 <div className="mt-3">
                     <p className=" uppercase mb-1 ">
@@ -72,7 +61,7 @@ function ProductIdWrapper({
                     </p>
                     <div className='flex gap-1'>
                         {
-                            size.map((ele, id) => (
+                            product.size.map((ele, id) => (
                                 <div
                                     key={id}
                                     onClick={() => handleSize(ele)}
@@ -93,7 +82,7 @@ function ProductIdWrapper({
                     </p>
                     <div className='flex gap-1'>
                         {
-                            color.map((ele, id) => (
+                            product.color.map((ele, id) => (
                                 <div
                                     key={id}
                                     onClick={() => handleColor(ele)}
