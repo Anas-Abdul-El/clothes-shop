@@ -11,10 +11,10 @@ import {
 import { useEffect, useState } from "react"
 
 const sortedOption = [
-  "Featured",
-  " Low to High",
-  "Price: High to Low",
-  "Newest Arrivals",
+  "featured",
+  "price: low to high",
+  "price: high to low",
+  "newest arrivals",
 
 ] as const
 
@@ -45,7 +45,9 @@ export default function SortedBy({
         <ComboboxList>
           {(item) => (
             <ComboboxItem key={item} value={item}>
-              {item}
+              <p className="capitalize">
+                {item}
+              </p>
             </ComboboxItem>
           )}
         </ComboboxList>

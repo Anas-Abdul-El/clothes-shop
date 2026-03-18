@@ -1,7 +1,7 @@
 "use client"
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Button } from '../ui/button'
-import { Settings, TriangleAlert } from 'lucide-react'
+import { Settings } from 'lucide-react'
 import SortedBy from './Sorted-by'
 import type { Product } from '@/types'
 import ProductWrapper from '../global/Product-wrapper'
@@ -12,7 +12,8 @@ import {
   useSearchParams
 } from 'next/navigation'
 import ErrorInFetching from '../global/Error-in-fetching'
-
+import EmptyWrapper from '../global/Empty'
+import Link from 'next/link'
 
 type Products = Product[] | {
   error: string;
@@ -49,12 +50,13 @@ function ShopWrapper({
   const {
     price = "all",
     collection = "all",
+    sorted
   } = Object.fromEntries(searchParams.entries())
 
-  const handleFilter = (title: string, value: string | null) => {
+  const HandleFilter = ({ title, value, className, ele }: { title: string, value: string | null, className: string, ele: string }) => {
     const params = new URLSearchParams(searchParams);
     params.set(title, value || 'all');
-    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    return <Link href={`${pathname}?${params.toString()}`} className={className + " flex justify-start h-10 cursor-pointer capitalize p-2 rounded-xl"}>{ele}</Link>
   }
 
   const handleSorted = (value: string | null) => {
@@ -67,7 +69,18 @@ function ShopWrapper({
     redirect(`/shop/${id}`)
   }
 
-  const collectionFiltering = products.filter(ele => {
+  const handleSortingArr = products.sort((a, b) => {
+    switch (sorted) {
+      case "price: low to high":
+        return a.price - b.price;
+      case "price: high to low":
+        return b.price - a.price;
+      default:
+        return a.price
+    }
+  })
+
+  const collectionFiltering = handleSortingArr.filter(ele => {
     if (collection === "all") {
       return ele;
     } else {
@@ -124,16 +137,12 @@ function ShopWrapper({
 
                 {
                   filter.options.map((ele, key) => (
-                    <Button
+                    <HandleFilter
                       key={key}
-                      variant={"outline"}
-                      onClick={() => handleFilter(filter.name, ele)}
-                      className={`flex justify-start h-10 cursor-pointer capitalize
-                          ${(filter.name === 'collection' && ele === collection)
-                          || (filter.name === 'price' && ele === price) ? 'bg-black text-white' : ''}`}
-                    >
-                      {ele}
-                    </Button>
+                      title={filter.name} value={ele} ele={ele}
+                      className={`${(filter.name === 'collection' && ele === collection)
+                        || (filter.name === 'price' && ele === price) ? 'bg-black text-white' : ''}`}
+                    />
                   ))
                 }
 
@@ -142,11 +151,9 @@ function ShopWrapper({
           }
         </div>
         {
-          !finalFiltering ? (
-            <div>
-              {/* 
-                TODO: Create component to handle empty array 
-              */}
+          (num === 0) ? (
+            <div className='w-full mt-40'>
+              <EmptyWrapper />
             </div>
           ) : (
             !isSorted && (
