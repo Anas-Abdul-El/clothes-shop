@@ -2,16 +2,20 @@
 import Image from 'next/image';
 import Cart from './nav/Cart';
 import { Product } from '@/types';
+import { redirect } from 'next/navigation';
 
 function ProductWrapper({
     product,
     type,
-    handleClick,
 }: {
     product: Product
     type: 'shop' | 'bestSeller',
-    handleClick: (id: number) => void
 }) {
+
+    const handleClick = (id: number) => {
+        redirect(`/shop/${id}`)
+    }
+
 
 
     return (
@@ -34,6 +38,7 @@ function ProductWrapper({
             <div
                 className={`cursor-pointer bg-white z-10 absolute right-4 bottom-20 p-3 rounded-full transition-all 
                            duration-300 opacity-0 group-hover:opacity-100 translate-y-5 group-hover:translate-y-0`}
+                onClick={() => { }}
             >
                 <Cart />
             </div>

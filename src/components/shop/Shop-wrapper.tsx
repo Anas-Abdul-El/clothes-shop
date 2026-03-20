@@ -6,7 +6,6 @@ import SortedBy from './Sorted-by'
 import type { Product } from '@/types'
 import ProductWrapper from '../global/Product-wrapper'
 import {
-  redirect,
   usePathname,
   useRouter,
   useSearchParams
@@ -14,6 +13,7 @@ import {
 import ErrorInFetching from '../global/Error-in-fetching'
 import EmptyWrapper from '../global/Empty'
 import Link from 'next/link'
+import { getItem, setItem } from '@/utils/localstorage'
 
 type Products = Product[] | {
   error: string;
@@ -34,6 +34,12 @@ const Filters = [
   }
 ]
 
+const isUser = getItem("user")
+
+if (!isUser) {
+  const Id = new Date()
+  setItem("user", Id.toString().split(" ")[4].replaceAll(":", ""))
+}
 
 function ShopWrapper({
   products
@@ -63,10 +69,6 @@ function ShopWrapper({
     const params = new URLSearchParams(searchParams);
     params.set('sorted', value || 'featured');
     router.push(`${pathname}?${params.toString()}`, { scroll: false });
-  }
-
-  const handleClick = (id: number) => {
-    redirect(`/shop/${id}`)
   }
 
   const handleSortingArr = products.sort((a, b) => {
@@ -164,7 +166,6 @@ function ShopWrapper({
                       key={key}
                       product={product}
                       type="shop"
-                      handleClick={handleClick}
                     />
                   ))
                 }

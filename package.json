@@ -15,6 +15,8 @@
     "@prisma/adapter-neon": "^7.5.0",
     "@prisma/adapter-pg": "^7.5.0",
     "@prisma/client": "^7.4.2",
+    "@uploadcare/react-uploader": "^1.13.0",
+    "@uploadcare/react-widget": "^3.0.0",
     "@upstash/redis": "^1.37.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

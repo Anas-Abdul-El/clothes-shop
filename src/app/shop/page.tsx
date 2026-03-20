@@ -2,6 +2,7 @@ import ShopWrapper from '@/components/shop/Shop-wrapper'
 import { getAllProduct } from '../../../server/getAllProduct'
 import { Suspense } from 'react'
 import { Loading } from '@/components/global/Loading'
+import { setItem } from '@/utils/localstorage'
 
 
 const ProductsFetching = async () => {
@@ -12,6 +13,7 @@ const ProductsFetching = async () => {
 
 
 async function Shop() {
+
 
   return (
     <Suspense fallback={<Loading />}>

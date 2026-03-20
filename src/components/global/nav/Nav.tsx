@@ -1,10 +1,8 @@
 import Link from 'next/link'
-import {
-    Drawer,
-    DrawerTrigger,
-} from "@/components/ui/drawer"
 import Cart from './Cart'
 import PhoneSideBar from './PhoneSideBar'
+import { getItem } from '@/utils/localstorage'
+import { getCartItems } from '../../../../server/cartActions'
 
 const links = [
     {
@@ -29,7 +27,12 @@ const links = [
     },
 ]
 
+const userId = getItem('user')
+
+
+const cartItems = await getCartItems(userId)
 function Nav() {
+
     return (
         <nav className='fixed bg-white w-full h-20 border-b border-b-[#f7757153] z-50'>
             <div className='w-6/7 h-full mx-auto flex items-center justify-between'>
@@ -53,7 +56,7 @@ function Nav() {
                     <h1 className='font-light text-2xl font-serif '>
                         clothes shop
                     </h1>
-                    <Cart />
+                    <Cart cartItems={cartItems} />
                 </div>
             </div>
         </nav>

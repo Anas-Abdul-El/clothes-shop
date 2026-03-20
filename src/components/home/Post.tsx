@@ -2,9 +2,10 @@ import Image from 'next/image';
 import { Instagram } from 'lucide-react';
 
 type Post = {
-    id: number;
-    image: string;
+    id: string;
+    imageUrl: string;
     link: string;
+    createdAt: Date;
 }
 
 function Post({
@@ -13,12 +14,12 @@ function Post({
     posts: Post
 }) {
 
-    const { image, link } = posts
+    const { imageUrl, link } = posts
 
     return (
         <div className='rounded-xl group overflow-hidden cursor-pointer relative'>
             <Image
-                src={image}
+                src={imageUrl}
                 alt="Post image"
                 width={400}
                 height={400}

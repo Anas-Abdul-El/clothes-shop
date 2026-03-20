@@ -17,7 +17,7 @@ function HeroSection() {
             <div>
                 <Image
                     alt="Hero Image"
-                    src="/images/hero.jpg"
+                    src="https://6bpg5zicvs.ucarecd.net/96ccf0e7-c68c-4e4e-aad2-b840768d3260/hero.jpg"
                     width={700}
                     height={700}
                     className='object-cover rounded-2xl h-screen '

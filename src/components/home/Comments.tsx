@@ -1,29 +1,10 @@
+
 import { Star } from "lucide-react";
+import getComments from "../../../server/getComments";
+import ErrorInFetching from "../global/Error-in-fetching";
 
-const comments = [
-    {
-        id: 1,
-        name: 'John Doe',
-        comment: "Absolutely love the quality and elegance of every piece. The Ramadan collection was stunning and the delivery was fast!",
-        location: 'New York, USA',
-        rating: 5,
-    },
-    {
-        id: 2,
-        name: 'Jane Smith',
-        comment: "Finally found a boutique that understands modest fashion without compromising on style. The sets are my favorite!",
-        location: 'Los Angeles, USA',
-        rating: 4,
-    },
-    {
-        id: 3,
-        name: 'Bob Johnson',
-        comment: "The fabric quality is exceptional. I ordered via WhatsApp and the process was so smooth. Will definitely order again.",
-        location: 'Chicago, USA',
-        rating: 4,
-    },
-];
 
+const comments = await getComments()
 function Comments() {
 
     const renderStars = (rating: number) => {
@@ -53,21 +34,25 @@ function Comments() {
             </div>
             <div className='w-full grid grid-cols-1 md:grid-cols-3 gap-10 mt-20 mb-40'>
                 {
-                    comments.map(comment => (
-                        <div key={comment.id} className='border border-gray-300 p-6 rounded-lg relative'>
-                            <div className="w-full flex gap-1 mb-3">
-                                {
-                                    renderStars(comment.rating)
-                                }
+                    ("error" in comments) ? (
+                        <ErrorInFetching error={comments.error} />
+                    ) : (
+                        comments.map(comment => (
+                            <div key={comment.id} className='border border-gray-300 p-6 rounded-lg relative'>
+                                <div className="w-full flex gap-1 mb-3">
+                                    {
+                                        renderStars(comment.rate)
+                                    }
+                                </div>
+                                <p className=" my-4 text-sm min-h-20">"{comment.comment}"</p>
+                                <span className="border h-px w-5/6 absolute"></span>
+                                <div className="mt-10">
+                                    <h3 className="text-sm mb-1 capitalize">{nameRender(comment.name)}</h3>
+                                    <p className="text-gray-500 text-xs">{comment.location}</p>
+                                </div>
                             </div>
-                            <p className=" my-4 text-sm min-h-20">"{comment.comment}"</p>
-                            <span className="border h-px w-5/6 absolute"></span>
-                            <div className="mt-10">
-                                <h3 className="text-sm mb-1">{nameRender(comment.name)}</h3>
-                                <p className="text-gray-500 text-xs">{comment.location}</p>
-                            </div>
-                        </div>
-                    ))
+                        ))
+                    )
                 }
             </div>
         </div>

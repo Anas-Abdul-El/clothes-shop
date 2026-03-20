@@ -1,49 +1,11 @@
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import ProductWrapper from '../global/Product-wrapper'
+import { getAllProduct } from '../../../server/getAllProduct'
+import { type Product } from '@/types'
+import ErrorInFetching from '../global/Error-in-fetching'
 
-const bestSellerData = [
-    {
-        id: 1,
-        name: 'Product 1',
-        price: '$29.99',
-        isFeatured: true,
-        isSale: true,
-        image: '/images/products/product-1.jpg',
-    },
-    {
-        id: 2,
-        name: 'Product 2',
-        price: '$39.99',
-        isFeatured: false,
-        isSale: true,
-        image: '/images/products/product-2.jpg',
-    },
-    {
-        id: 3,
-        name: 'Product 3',
-        price: '$49.99',
-        isFeatured: false,
-        isSale: false,
-        image: '/images/products/product-3.jpg',
-    },
-    {
-        id: 4,
-        name: 'Product 4',
-        price: '$59.99',
-        isFeatured: true,
-        isSale: false,
-        image: '/images/products/product-4.jpg',
-    },
-    {
-        id: 5,
-        name: 'Product 5',
-        price: '$59.99',
-        isFeatured: false,
-        isSale: true,
-        image: '/images/products/product-5.jpg',
-    },
-]
+const bestSellerData: Product[] | { error: string } = await getAllProduct()
 
 function BestSeller() {
     return (
@@ -62,13 +24,19 @@ function BestSeller() {
             </div>
             <div className='w-full h-auto grid grid-cols-2 lg:grid-cols-4 gap-x-5 space-y-3 py-10'>
                 {
-                    bestSellerData.map((product) => (
-                        <ProductWrapper 
-                            key={product.id} 
-                            product={product} 
-                            type="bestSeller" 
-                        />
-                    ))
+                    ("error" in bestSellerData) ? (
+                        <ErrorInFetching error={bestSellerData.error} />
+                    ) : (
+                        bestSellerData
+                            .filter((product) => product.isBestSeller)
+                            .map((product) => (
+                                <ProductWrapper
+                                    key={product.id}
+                                    product={product}
+                                    type="bestSeller"
+                                />
+                            ))
+                    )
                 }
             </div>
         </section>

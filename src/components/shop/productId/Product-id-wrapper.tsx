@@ -1,10 +1,13 @@
 "use client"
 import { Button } from '@/components/ui/button'
 import type { ProductWithAllValues } from '@/types'
+import { useUserId } from '@/utils/useUserId'
 import { ArrowLeft, ShoppingBag, MessageCircle, Truck } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import addToCart from '../../../../server/addToCart'
+import { getItem, setItem } from '@/utils/localstorage'
 
 
 function ProductIdWrapper({
@@ -23,6 +26,24 @@ function ProductIdWrapper({
 
     const handleColor = (color: string) => {
         setcolorSelected(color)
+    }
+
+
+    const userId = getItem("user") as string
+
+    const productInfo = {
+        productId: product.id,
+        quantity: 1,
+        size: sizeSelected.toString(),
+        color: colorSelected,
+        price: product.price
+    }
+
+    const handleCart = () => {
+        console.log(userId);
+        console.log(productInfo);
+
+        addToCart(userId, productInfo)
     }
 
     return (
@@ -95,7 +116,7 @@ function ProductIdWrapper({
                     </div>
                 </div>
                 <div className='w-full mt-6 pr-10 md:pr-20'>
-                    <Button className='w-full py-6 flex justify-center items-center gap-3 cursor-pointer border' >
+                    <Button onClick={handleCart} className='w-full py-6 flex justify-center items-center gap-3 cursor-pointer border' >
                         <ShoppingBag />
                         <p className='uppercase'>add to bag</p>
                     </Button>
@@ -113,7 +134,7 @@ function ProductIdWrapper({
                         <p className='text-xs'>Shipping available all over Lebanon</p>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     )
 }

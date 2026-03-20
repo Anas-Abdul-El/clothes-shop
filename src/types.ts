@@ -1,5 +1,4 @@
 
-
 export type Product = {
     id: number;
     name: string;
@@ -20,19 +19,40 @@ export type ProductWithAllValues = {
     compareAtPrice: string;
     createdAt: string;
     description: string;
-    id: string;
+    id: number;
     image: string;
     isBestSeller: string;
     isFeatured: string;
     name: string;
-    price: string;
+    price: number;
     size: string[];
     updatedAt: string;
 }
 
-export type collectionType = {
+export type CollectionType = {
     id: number;
     name: string;
     description: string | null;
     image: string;
+}
+
+export type ProductInfo = {
+    productId: number,
+    quantity: number,
+    size: string,
+    color: string,
+    price: number,
+}
+
+export type CartItem = {
+    id: string;
+    productId: number;
+    url: string;
+    color: string;
+    size: string;
+    price: number;
+    quantity: number;
+    cartId: string;
+    name: string;
+    priceForOne: number;
 }
