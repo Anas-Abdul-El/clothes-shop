@@ -13,70 +13,60 @@ import { Button } from '@/components/ui/button'
 import { ShoppingBag, X } from 'lucide-react'
 import { getCartItems, updateCartItemQuantity } from "../../../../server/cartActions"
 import { getItem } from "@/utils/localstorage"
-import { CartItem } from "@/types"
 import ErrorInFetching from "../Error-in-fetching"
-
-const items = [
-    {
-        name: "Blush Silk Abaya",
-        img: 1,
-        desc: "S / Blush Pink",
-        price: 34
-    },
-    {
-        name: "Blush Silk Abaya",
-        img: 2,
-        desc: "S / Blush Pink",
-        price: 20
-    },
-    {
-        name: "Blush Silk Abaya",
-        img: 3,
-        desc: "S / Blush Pink",
-        price: 40
-    },
-    {
-        name: "Blush Silk Abaya",
-        img: 4,
-        desc: "S / Blush Pink",
-        price: 50
-    },
-    {
-        name: "Blush Silk Abaya",
-        img: 3,
-        desc: "S / Blush Pink",
-        price: 40
-    },
-    {
-        name: "Blush Silk Abaya",
-        img: 4,
-        desc: "S / Blush Pink",
-        price: 50
-    },
-    {
-        name: "Blush Silk Abaya",
-        img: 4,
-        desc: "S / Blush Pink",
-        price: 50
-    },
-]
-
-const isEmpty = (items.length === 0)
+import { useEffect, useOptimistic, useState, useTransition } from "react"
+import { type CartItem } from "@/types"
+import { error } from "console"
 
 
+const userId = getItem('user')
 
-function Cart({
-    cartItems
-}: {
-    cartItems: CartItem[] | { error: string; }
-}) {
+
+function Cart() {
+
+    const [pending, setTransition] = useTransition()
+    const [cartItems, setCartItems] = useState<CartItem[] | { error: string }>([])
+
+    useEffect(() => {
+        setTransition(async () => {
+            const data = await getCartItems(userId)
+            setCartItems(data)
+        })
+    }, [])
+
+    const [optimisticItems, setOptimisticItems] = useOptimistic(cartItems, (currentItems, args: { itemId: string, action: 'inc' | 'dec' }) => {
+
+        if ("error" in currentItems) return currentItems
+        const item = currentItems.findIndex(ele => ele.id === args.itemId)
+
+        const isInc = args.action === 'inc'
+        if (isInc) {
+            return currentItems.map((ele, id) => {
+                if (id === item) ele.quantity++
+                return ele
+            })
+        } else {
+            return currentItems.map((ele, id) => {
+                if (id === item) ele.quantity--
+                return ele
+            })
+        }
+    })
+
+    const isEmpty = !("error" in cartItems) && cartItems.length === 0
+
+    const handleQuantityModify = (ele: CartItem, action: 'inc' | 'dec') => {
+        setTransition(async () => {
+            setOptimisticItems({ itemId: ele.id, action })
+            await updateCartItemQuantity(ele.id, ele.priceForOne * ele.quantity, action)
+        })
+    }
 
     return (
         <>
             <Drawer direction="right">
-
                 <DrawerTrigger asChild >
-                    <ShoppingBag size={20} className='hover:text-orange-400' />
+                    <ShoppingBag size={20} className='hover:text-orange-400 ' />
                 </DrawerTrigger>
 
                 <DrawerContent>
@@ -103,12 +93,11 @@ function Cart({
                             <>
                                 <div className='overflow-auto h-8/11 pb-10'>
                                     {
-                                        ("error" in cartItems) ? (
-                                            <ErrorInFetching error={cartItems.error} />
+                                        ("error" in optimisticItems) ? (
+                                            <ErrorInFetching error={optimisticItems.error} />
                                         ) : (
-
-                                            cartItems.map((ele, key) => (
-                                                <div key={key} className='w-full h-35 flex p-5 gap-5 '>
+                                            optimisticItems.map((ele) => (
+                                                <div key={ele.id} className='w-full h-35 flex p-5 gap-5 '>
                                                     <Image
                                                         width={90}
                                                         height={40}
@@ -124,14 +113,14 @@ function Cart({
                                                         <div className='flex justify-between w-full items-center'>
                                                             <div className='flex items-center gap-2'>
                                                                 <Button
-
+                                                                    onClick={() => handleQuantityModify(ele, 'dec')}
                                                                     className='rounded-full flex justify-center items-center dark'
                                                                 >
                                                                     <p className='w-2 h-2 flex justify-center items-center'>-</p>
                                                                 </Button>
                                                                 <p>{ele.quantity}</p>
                                                                 <Button
-                                                                    onClick={() => updateCartItemQuantity(ele.id, ele.priceForOne * ele.quantity, 'inc')}
+                                                                    onClick={() => handleQuantityModify(ele, 'inc')}
                                                                     className='rounded-full flex justify-center items-center dark'
                                                                 >
                                                                     <p className='w-2 h-2 flex justify-center items-center'>+</p>

@@ -41,8 +41,8 @@ export async function getCartItems(userId: string) {
                 })
 
                 return {
-                    ...cartItem,
                     ...image[0],
+                    ...cartItem,
                     priceForOne: cartItem.price
                 }
 
@@ -59,15 +59,21 @@ export async function getCartItems(userId: string) {
 
 
 
-export async function updateCartItemQuantity(id: string, price: number, action: 'inc' | 'dec') {
+export const updateCartItemQuantity = async (
+    id: string,
+    price: number,
+    action: 'inc' | 'dec'
+) => {
 
     const isAdd = action === 'inc'
 
     await prisma.cartItem.update({
         where: { id },
         data: {
-            quantity: { increment: 1 },
+            quantity: isAdd ? { increment: 1 } : { decrement: 1 },
             price,
         },
     })
+
+
 }

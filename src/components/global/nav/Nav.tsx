@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Cart from './Cart'
 import PhoneSideBar from './PhoneSideBar'
-import { getItem } from '@/utils/localstorage'
+
 import { getCartItems } from '../../../../server/cartActions'
 
 const links = [
@@ -27,10 +27,10 @@ const links = [
     },
 ]
 
-const userId = getItem('user')
 
 
-const cartItems = await getCartItems(userId)
+
+
 function Nav() {
 
     return (
@@ -56,7 +56,7 @@ function Nav() {
                     <h1 className='font-light text-2xl font-serif '>
                         clothes shop
                     </h1>
-                    <Cart cartItems={cartItems} />
+                    <Cart />
                 </div>
             </div>
         </nav>
