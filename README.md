@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Shopping E-Commerce Platform
 
-## Getting Started
+A modern, full-stack e-commerce application built with Next.js for a Lebanon-based fashion retailer. Features product browsing, shopping cart, customer reviews, Instagram integration, and WhatsApp ordering support.
 
-First, run the development server:
+## 🚀 Tech Stack
 
+- **Frontend**: Next.js 16, React 19, TypeScript
+- **Backend**: Next.js Server Actions
+- **Database**: PostgreSQL (Neon) with Prisma ORM
+- **Caching**: Upstash Redis
+- **Styling**: TailwindCSS, shadcn/ui, Radix UI
+- **File Storage**: Uploadcare
+
+## ✨ Features
+
+- 🛍️ Product catalog with collections and variants
+- 🛒 Shopping cart with persistent storage
+- ⭐ Customer reviews and ratings
+- 📱 Responsive design with mobile-first approach
+- 📸 Instagram feed integration
+- 💬 WhatsApp ordering support
+- ⚡ Redis caching for performance
+- 🔄 Real-time cart updates
+
+## 🏃 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- pnpm (recommended) or npm
+- PostgreSQL database (Neon recommended)
+- Upstash Redis account
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd shopping
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+pnpm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables:
+Create a `.env.local` file with:
+```env
+DATABASE_URL="your-postgresql-connection-string"
+REDIS_URL="your-upstash-redis-url"
+UPLOADCARE_PUBLIC_KEY="your-uploadcare-key"
+NEXT_PUBLIC_WHATSAPP_NUMBER="your-whatsapp-number"
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Set up the database:
+```bash
+pnpm prisma migrate dev
+pnpm prisma generate
+```
 
-## Learn More
+5. Run the development server:
+```bash
+pnpm dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🗄️ Database Schema
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The application uses Prisma with the following main entities:
+- **Products**: With variants (color, size, stock)
+- **Collections**: Product groupings
+- **Cart & CartItems**: Shopping functionality
+- **Orders**: Purchase tracking
+- **Comments**: Customer testimonials
+- **InstagramPosts**: Social media integration
 
-## Deploy on Vercel
+## 📁 Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+├── server/          # Server actions for data fetching & mutations
+├── src/
+│   ├── app/         # Next.js app router pages
+│   ├── components/  # Reusable UI components
+│   └── types.ts     # TypeScript type definitions
+├── prisma/          # Database schema and migrations
+├── cache/           # Redis caching logic
+└── public/          # Static assets
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠️ Development
+
+### Available Scripts
+
+- `pnpm dev` - Start development server
+- `pnpm build` - Build for production
+- `pnpm start` - Start production server
+- `pnpm lint` - Run ESLint
+
+### Database Management
+
+- `pnpm prisma studio` - Open Prisma Studio
+- `pnpm prisma migrate dev` - Create and apply migrations
+- `pnpm prisma generate` - Generate Prisma client
+
+## 📝 Notes on Development
+
+The codebase has structural issues I identified during development — messy DB queries, server actions used for fetching, and unclear file structure. Because of these issues, the project is not complete. I documented the lessons learned and applied them in next project.
+
+### Key Lessons Learned
+
+- **Authentication**: Always implement proper user authentication from the start
+- **Database Optimization**: Avoid N+1 queries, use eager loading and pagination
+- **Caching**: Plan cache invalidation strategies and fix typos in key naming
+- **Type Safety**: Generate types from schema, avoid manual type maintenance
+- **Error Handling**: Implement proper error logging and user-friendly messages
+- **Server Actions**: Return operation results instead of using redirects for mutations
+
+## 🚀 Deployment
+
+The application is optimized for deployment on Vercel with:
+- Automatic scaling
+- Edge functions for server actions
+- Built-in Redis and PostgreSQL integrations
