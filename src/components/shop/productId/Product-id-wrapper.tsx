@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import addToCart from '../../../../server/addToCart'
 import { getItem, setItem } from '@/utils/localstorage'
+import { usePathname } from 'next/navigation'
 
 
 function ProductIdWrapper({
@@ -18,6 +19,7 @@ function ProductIdWrapper({
 
     const [sizeSelected, setSizeSelected] = useState(product.size[0])
     const [colorSelected, setcolorSelected] = useState(product.color[0])
+    const path = usePathname()
 
 
     const handleSize = (size: string) => {
@@ -39,11 +41,11 @@ function ProductIdWrapper({
         price: product.price
     }
 
-    const handleCart = () => {
-        console.log(userId);
-        console.log(productInfo);
+    console.log(path);
 
-        addToCart(userId, productInfo)
+
+    const handleCart = () => {
+        addToCart(userId, productInfo, path)
     }
 
     return (

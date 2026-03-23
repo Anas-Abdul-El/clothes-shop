@@ -14,9 +14,8 @@ import { ShoppingBag, X } from 'lucide-react'
 import { getCartItems, updateCartItemQuantity } from "../../../../server/cartActions"
 import { getItem } from "@/utils/localstorage"
 import ErrorInFetching from "../Error-in-fetching"
-import { useEffect, useOptimistic, useState, useTransition } from "react"
+import { startTransition, useEffect, useOptimistic, useState, useTransition } from "react"
 import { type CartItem } from "@/types"
-import { error } from "console"
 
 
 const userId = getItem('user')
@@ -24,41 +23,42 @@ const userId = getItem('user')
 
 function Cart() {
 
-    const [pending, setTransition] = useTransition()
     const [cartItems, setCartItems] = useState<CartItem[] | { error: string }>([])
 
-    useEffect(() => {
-        setTransition(async () => {
+    const fetchCartItems = async () => {
+        startTransition(async () => {
             const data = await getCartItems(userId)
             setCartItems(data)
         })
+    }
+
+    useEffect(() => {
+        fetchCartItems()
     }, [])
 
-    const [optimisticItems, setOptimisticItems] = useOptimistic(cartItems, (currentItems, args: { itemId: string, action: 'inc' | 'dec' }) => {
+    const [optimisticItems, setOptimisticItems] = useOptimistic(
+        cartItems,
+        (currentItems, args: { itemId: string; action: 'inc' | 'dec' }) => {
+            if ("error" in currentItems) return currentItems;
 
-        if ("error" in currentItems) return currentItems
-        const item = currentItems.findIndex(ele => ele.id === args.itemId)
+            return currentItems.map((ele) => {
+                if (ele.id !== args.itemId) return ele;
 
-        const isInc = args.action === 'inc'
-        if (isInc) {
-            return currentItems.map((ele, id) => {
-                if (id === item) ele.quantity++
-                return ele
-            })
-        } else {
-            return currentItems.map((ele, id) => {
-                if (id === item) ele.quantity--
-                return ele
-            })
+                return {
+                    ...ele,
+                    quantity: args.action === 'inc' ? ele.quantity + 1 : ele.quantity - 1,
+                };
+            });
         }
-    })
+    );
 
     const isEmpty = !("error" in cartItems) && cartItems.length === 0
 
     const handleQuantityModify = (ele: CartItem, action: 'inc' | 'dec') => {
-        setTransition(async () => {
+        startTransition(async () => {
             setOptimisticItems({ itemId: ele.id, action })
-            await updateCartItemQuantity(ele.id, ele.priceForOne * ele.quantity, action)
+            await updateCartItemQuantity(ele.id, ele.priceForOne, action, ele.quantity)
+            await fetchCartItems()
         })
     }
 

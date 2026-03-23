@@ -1,9 +1,10 @@
 "use server"
 import { prisma } from '@/lib/prisma';
 import { type ProductInfo } from '@/types';
+import { revalidatePath } from 'next/cache';
 
 
-async function addToCart(userId: string, productInfo: ProductInfo) {
+async function addToCart(userId: string, productInfo: ProductInfo, path: string) {
 
     const { productId, quantity, size, color, price } = productInfo
 
@@ -23,6 +24,7 @@ async function addToCart(userId: string, productInfo: ProductInfo) {
             })
         })
 
+        revalidatePath(path)
     } catch (error) {
         return { error: `something went wrong` }
     }

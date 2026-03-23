@@ -2,7 +2,7 @@
 import { prisma } from "@/lib/prisma";
 
 
-export async function getCartItems(userId: string) {
+export const getCartItems = async (userId: string) => {
 
     try {
         const Cart = await prisma.cart.findFirst({
@@ -53,8 +53,8 @@ export async function getCartItems(userId: string) {
     } catch (error) {
         return { error: `something went wrong * ${error} *` }
     }
-
 }
+
 
 
 
@@ -62,18 +62,17 @@ export async function getCartItems(userId: string) {
 export const updateCartItemQuantity = async (
     id: string,
     price: number,
-    action: 'inc' | 'dec'
+    action: 'inc' | 'dec',
+    currentQuantity: number
 ) => {
-
     const isAdd = action === 'inc'
+    const newQuantity = isAdd ? currentQuantity + 1 : currentQuantity - 1
 
     await prisma.cartItem.update({
         where: { id },
         data: {
             quantity: isAdd ? { increment: 1 } : { decrement: 1 },
-            price,
+            price: price * newQuantity
         },
     })
-
-
 }
